@@ -4,10 +4,10 @@ import shutil
 from fastapi import FastAPI, Request, UploadFile, File
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import FileResponse
-from backend.parser import extract_pdf_content
+from parser import extract_pdf_content
 
 app = FastAPI()
-templates = Jinja2Templates(directory="backend/templates")
+templates = Jinja2Templates(directory="templates")
 
 @app.get("/")
 async def home(request: Request):
@@ -15,10 +15,10 @@ async def home(request: Request):
 
 @app.post("/upload")
 async def upload_pdf(request: Request, pdf: UploadFile = File(...)):
-    os.makedirs("backend/uploads", exist_ok=True)
+    os.makedirs("uploads", exist_ok=True)
     os.makedirs("output", exist_ok=True)
     
-    file_path = os.path.join("backend", "uploads", pdf.filename)
+    file_path = os.path.join("uploads", pdf.filename)
     
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(pdf.file, buffer)
